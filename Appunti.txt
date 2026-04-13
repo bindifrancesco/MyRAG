@@ -1,0 +1,103 @@
+//PdfLoader.h
+class PdfLoader {
+//public:
+//    PdfLoader();
+//    ~PdfLoader();
+//
+//    void loadPdf(const std::string& filePath);
+//    bool isLoaded() const;
+//    const std::vector<std::uint8_t>& data() const;
+public:
+    static std::optional<std::vector<std::uint8_t>>
+        load(const std::string& filePath);
+
+//private:
+//    //VECCHIO
+//    /*std::vector<char> data_;
+//    ❌ Perché è un problema
+//        char può essere signed o unsigned(dipende dal compilatore)
+//        dati PDF sono binari puri
+//        rischi :
+//    interpretazioni negative dei byte
+//        confronti meno chiari
+//        casting continui(unsigned char nel main)*/
+//    std::vector<std::uint8_t> data_;
+//    bool loaded_;
+};
+
+
+
+//PdfLoader.cpp
+//PdfLoader::PdfLoader() : loaded_(false) {}
+//PdfLoader::~PdfLoader() {}
+//
+//void PdfLoader::loadPdf(const std::string& filePath) {
+//    std::clog << "[DEBUG] PdfLoader::loadPdf entry, path=" << filePath << '\n';
+//    std::ifstream stream(filePath, std::ios::binary);
+//    if (!stream) {
+//        std::cerr << "[ERROR] Failed to open PDF: " << filePath << '\n';
+//        loaded_ = false;
+//        return;
+//    }
+//
+//    /*
+//    * VECCHIO
+//    stream.seekg(0, std::ios::end);
+//    std::streamoff size = stream.tellg();
+//    stream.seekg(0, std::ios::beg);
+//    ❌ Cosa può andare storto
+//        size = -1
+//        conversione in size_t → diventa un numero enorme
+//        resize() alloca memoria gigante → crash o freeze
+//    */
+//    stream.seekg(0, std::ios::end);
+//    std::streamoff size = stream.tellg();
+//    if (size <= 0) {
+//        std::cerr << "[ERROR] Invalid file size\n";
+//        loaded_ = false;
+//        return;
+//    }
+//    stream.seekg(0, std::ios::beg);
+//
+//    std::clog << "[DEBUG] file size (bytes)=" << size << '\n';
+//
+//    if (size <= 0) {
+//        std::cerr << "[ERROR] Empty or unreadable PDF: " << filePath << '\n';
+//        loaded_ = false;
+//        return;
+//    }
+//
+//    data_.resize(static_cast<size_t>(size));
+//    stream.read(data_.data(), static_cast<std::streamsize>(size));
+//    if (!stream.read(data_.data(), size)) {
+//        std::cerr << "[ERROR] Failed to read PDF data: " << filePath << '\n';
+//        loaded_ = false;
+//        return;
+//    }
+//
+//    // Basic check for PDF header "%PDF-"
+//	//VECCHIO
+//    /*if (data_.size() < 5 || std::string(data_.begin(), data_.begin() + 5) != "%PDF-") {
+//        std::cerr << "[ERROR] File is not a PDF (missing %PDF- header): " << filePath << '\n';
+//        loaded_ = false;
+//        return;
+//    }
+//    ⚠️ Problemi
+//        Crei una std::string da dati binari → non necessario
+//        È meno efficiente
+//        Può essere fragile con dati non - ASCII o buffer non null - terminated
+//        Stai facendo una conversione inutile solo per confrontare 5 byte*/
+//    const char magic[5] = { '%', 'P', 'D', 'F', '-' };
+//
+//    if (data_.size() < 5 || !std::equal(magic, magic + 5, data_.begin())) {
+//        std::cerr << "[ERROR] File is not a PDF (missing %PDF- header)\n";
+//        loaded_ = false;
+//        return;
+//    }
+//
+//    loaded_ = true;
+//    std::clog << "[DEBUG] Loaded PDF successfully: " << filePath << " (" << data_.size() << " bytes)\n";
+//}
+//
+//bool PdfLoader::isLoaded() const { return loaded_; }
+//const std::vector<std::uint8_t>& PdfLoader::data() const { return data_; }

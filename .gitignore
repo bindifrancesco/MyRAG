@@ -1,0 +1,11 @@
+# build
+out/
+build/
+cmake-build-*/
+
+# Visual Studio
+.vs/
+
+# OS
+.DS_Store
+Thumbs.db
